@@ -1,0 +1,47 @@
+%{
+int lineNum = 1;
+#include "eyesim-ex1.tab.h"
+#define YYSTYPE int  /* only one attribute associated with all symbols, the type is int */
+%}
+
+INT		-?[0-9]+
+STRING (["][^"]*["])
+IDENT		[a-zA-Z][a-zA-Z0-9_]* 
+%x COMMENT
+%option yylineno
+
+%%
+
+"int"       return tINT;
+"string"    return tSTRING;
+"return"    return tRETURN;
+"print"     return tPRINT;
+","         return tCOMMA;
+"("         return tLPAR ;                      
+")"         return tRPAR;
+"%"         return tMOD;
+"="         return tASSIGNM ;                           
+"+"         return tPLUS;
+"*"         return tSTAR ;               
+"{"         return tLBRAC;
+"}"         return tRBRAC;
+"-"         return tMINUS;                          
+"/"         return tDIV;
+";"         return tSEMI;
+\n          {lineNum++;}
+[ \t\r\n]+ 
+
+{IDENT}  return tIDENT;
+    
+
+{INT}  return tINTVAL;
+
+
+{STRING}  return tSTRINGVAL;
+
+.       { 
+             return yytext[0];
+        }
+
+%%
+
